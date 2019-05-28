@@ -17,6 +17,7 @@ import javax.swing.*;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -30,8 +31,10 @@ public class HelloWorldControllerTest {
 
         RequestBuilder request =
                 MockMvcRequestBuilders.get("/hello-world").accept(MediaType.APPLICATION_JSON);
+        // Or the states().isOk()
         MvcResult result=
-                mockMvc.perform(request).andExpect(status(200)).andReturn();
+                mockMvc.perform(request).andExpect(status().is(200)).andExpect(content().
+                        string("Hello World")).andReturn();
         assertThat(result.getResponse().getContentAsString(),
                 is("Hello World"));
         //call "/hello-world"
